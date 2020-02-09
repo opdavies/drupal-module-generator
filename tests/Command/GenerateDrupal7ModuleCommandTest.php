@@ -9,20 +9,21 @@ use PHPUnit\Framework\TestCase;
 
 class GenerateDrupal7ModuleCommandTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        rmdir('test_module');
+    }
+
     /** @test */
     public function it_throws_an_exception_if_the_directory_already_exists() {
-        mkdir('my-existing-drupal-module');
+        mkdir('test_module');
 
-        try {
-            $commandTester = new CommandTester(new GenerateDrupal7Command());
-            $commandTester->execute([
-                'module-name' => 'my-existing-drupal-module',
-            ]);
-        } catch (CannotCreateModuleException $e) {
-            $this->addToAssertionCount(1);
-        }
+        $this->expectExceptionObject(CannotCreateModuleException::directoryAlreadyExists());
 
-        rmdir('my-existing-drupal-module');
+        $commandTester = new CommandTester(new GenerateDrupal7Command());
+        $commandTester->execute([
+            'module-name' => 'test_module'
+        ]);
     }
 
     /** @test */
@@ -30,7 +31,11 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
     {
         $commandTester = new CommandTester(new GenerateDrupal7Command());
         $commandTester->execute([
-            'module-name' => 'my-new-drupal-module',
+            'module-name' => 'test_module',
+        ]);
+
+        $this->assertTrue(is_dir('test_module'));
+    }
         ]);
 
         $this->assertTrue(is_dir('my-new-drupal-module'));
