@@ -21,19 +21,9 @@ class GenerateDrupal7Command extends Command
     private $machineName;
     private $testName;
 
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var Finder */
     private $finder;
-
-    /** @var SymfonyStyle $io */
     private $io;
-
-    /** @var ModuleNameConverter */
     private $moduleNameConverter;
-
-    /** @var TestNameConverter */
     private $testNameConverter;
 
     public function __construct(
