@@ -120,6 +120,7 @@ final class GenerateDrupal7Command extends Command
 
     private function updateFileContents($contents)
     {
+        $contents = str_replace('{{ machine_name }}', $this->machineName, $contents);
         $contents = str_replace('{{ name }}', $this->moduleName, $contents);
         $contents = str_replace('{{ test_name }}', $this->testName, $contents);
 

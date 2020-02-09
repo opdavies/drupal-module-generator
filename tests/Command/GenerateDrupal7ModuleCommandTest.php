@@ -109,6 +109,12 @@ final class GenerateDrupal7ModuleCommandTest extends TestCase
 
         $contents = file_get_contents('test_module/src/Tests/Functional/TestModuleTest.php');
 
+        $this->assertStringContainsString('namespace Drupal\\test_module\\Tests\\Functional', $contents);
+
         $this->assertStringContainsString('final class TestModuleTest', $contents);
+
+        $this->assertStringContainsString("'name' => 'Test Module'", $contents);
+        $this->assertStringContainsString("'description' => 'Test Module tests.'", $contents);
+        $this->assertStringContainsString("'group' => 'Test Module'", $contents);
     }
 }
