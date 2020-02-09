@@ -2,7 +2,7 @@
 
 namespace Opdavies\DrupalModuleGenerator\Service;
 
-class ModuleNameConverter
+final class ModuleNameConverter
 {
     public function __invoke(string $moduleName)
     {

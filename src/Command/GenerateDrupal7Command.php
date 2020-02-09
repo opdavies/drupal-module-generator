@@ -15,7 +15,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Tightenco\Collect\Support\Collection;
 
-class GenerateDrupal7Command extends Command
+final class GenerateDrupal7Command extends Command
 {
     private $moduleName;
     private $machineName;

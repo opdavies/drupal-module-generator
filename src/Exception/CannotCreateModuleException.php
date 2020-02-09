@@ -2,7 +2,7 @@
 
 namespace Opdavies\DrupalModuleGenerator\Exception;
 
-class CannotCreateModuleException extends \RuntimeException
+final class CannotCreateModuleException extends \RuntimeException
 {
     public static function directoryAlreadyExists()
     {

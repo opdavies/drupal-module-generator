@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class GenerateDrupal7ModuleCommandTest extends TestCase
+final class GenerateDrupal7ModuleCommandTest extends TestCase
 {
     protected function tearDown(): void
     {

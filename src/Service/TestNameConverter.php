@@ -2,7 +2,7 @@
 
 namespace Opdavies\DrupalModuleGenerator\Service;
 
-class TestNameConverter
+final class TestNameConverter
 {
     public function __invoke(string $moduleName)
     {
