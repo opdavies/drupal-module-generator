@@ -49,8 +49,10 @@ final class GenerateDrupal7Command extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Generate a new Drupal 7 module.')
-            ->addArgument('module-name', InputArgument::REQUIRED, 'The name of the module to create');
+            ->setDescription('Generate a new Drupal 7 module')
+            ->addArgument('module-name', InputArgument::REQUIRED, 'The name of the module to create')
+            ->setAliases(['d7', 'drupal7'])
+        ;
     }
 
     /**
