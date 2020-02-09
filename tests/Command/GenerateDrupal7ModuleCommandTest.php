@@ -4,6 +4,7 @@ namespace Opdavies\Tests\DrupalModuleGenerator\Command;
 
 use Opdavies\DrupalModuleGenerator\Command\GenerateDrupal7Command;
 use Opdavies\DrupalModuleGenerator\Exception\CannotCreateModuleException;
+use Opdavies\DrupalModuleGenerator\Service\TestNameConverter;
 use Symfony\Component\Console\Tester\CommandTester;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -23,7 +24,8 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
         $this->expectExceptionObject(CannotCreateModuleException::directoryAlreadyExists());
 
         $finder = new Finder();
-        $command = new GenerateDrupal7Command($finder);
+        $testNameConverter = new TestNameConverter();
+        $command = new GenerateDrupal7Command($finder, $testNameConverter);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
@@ -35,7 +37,8 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
     public function it_creates_a_new_module_directory()
     {
         $finder = new Finder();
-        $command = new GenerateDrupal7Command($finder);
+        $testNameConverter = new TestNameConverter();
+        $command = new GenerateDrupal7Command($finder, $testNameConverter);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
@@ -49,7 +52,8 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
     public function it_generates_an_info_file()
     {
         $finder = new Finder();
-        $command = new GenerateDrupal7Command($finder);
+        $testNameConverter = new TestNameConverter();
+        $command = new GenerateDrupal7Command($finder, $testNameConverter);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
@@ -68,7 +72,8 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
     public function it_generates_a_module_file()
     {
         $finder = new Finder();
-        $command = new GenerateDrupal7Command($finder);
+        $testNameConverter = new TestNameConverter();
+        $command = new GenerateDrupal7Command($finder, $testNameConverter);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
@@ -80,5 +85,24 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
         $contents = file_get_contents('test_module/test_module.module');
 
         $this->assertStringContainsString('The main module file for test_module.', $contents);
+    }
+
+    /** @test */
+    public function it_generates_a_test_case()
+    {
+        $finder = new Finder();
+        $testNameConverter = new TestNameConverter();
+        $command = new GenerateDrupal7Command($finder, $testNameConverter);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'module-name' => 'test_module',
+        ]);
+
+        $this->assertTrue(is_file('test_module/src/Tests/Functional/TestModuleTest.php'));
+
+        $contents = file_get_contents('test_module/src/Tests/Functional/TestModuleTest.php');
+
+        $this->assertStringContainsString('final class TestModuleTest', $contents);
     }
 }

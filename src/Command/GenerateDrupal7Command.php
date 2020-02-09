@@ -3,6 +3,7 @@
 namespace Opdavies\DrupalModuleGenerator\Command;
 
 use Opdavies\DrupalModuleGenerator\Exception\CannotCreateModuleException;
+use Opdavies\DrupalModuleGenerator\Service\TestNameConverter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +16,9 @@ use Tightenco\Collect\Support\Collection;
 
 class GenerateDrupal7Command extends Command
 {
+    private $moduleName;
+    private $testName;
+
     /** @var Filesystem */
     private $filesystem;
 
@@ -24,13 +28,18 @@ class GenerateDrupal7Command extends Command
     /** @var SymfonyStyle $io */
     private $io;
 
-    private $moduleName;
+    /** @var TestNameConverter */
+    private $testNameConverter;
 
-    public function __construct(Finder $finder, string $name = null)
-    {
+    public function __construct(
+        Finder $finder,
+        TestNameConverter $testNameConverter,
+        string $name = null
+    ) {
         parent::__construct($name);
 
         $this->finder = $finder;
+        $this->testNameConverter = $testNameConverter;
     }
 
     /**
@@ -56,6 +65,7 @@ class GenerateDrupal7Command extends Command
         $this->io = new SymfonyStyle($input, $output);
 
         $this->moduleName = $input->getArgument('module-name');
+        $this->testName = $this->testNameConverter->__invoke($this->moduleName);
 
         $this
             ->ensureDirectoryDoesNotExist()
@@ -87,25 +97,33 @@ class GenerateDrupal7Command extends Command
     private function createFiles()
     {
         $createdFiles = new Collection();
+        $testNameConverter = new TestNameConverter();
 
         /** @var SplFileInfo $file */
-        foreach ($this->finder->in('fixtures/drupal7_module')->name('/.[info,module]/') as $file) {
+        foreach ($this->finder->in('fixtures/drupal7_module')->files() as $file) {
+            $filename = "{$this->moduleName}.{$file->getExtension()}";
+
+            if ($file->getRelativePath()) {
+                mkdir("{$this->moduleName}/{$file->getRelativePath()}", 0777, $recursive = true);
+
+                $filename = "{$this->testName}.php";
+                $filename = "{$file->getRelativePath()}/{$filename}";
+            }
+
             $contents = $this->updateFileContents($file->getContents());
 
-            file_put_contents(
-                "{$this->moduleName}/{$this->moduleName}.{$file->getExtension()}",
-                $contents
-            );
+            file_put_contents("{$this->moduleName}/{$filename}", $contents);
 
-            $createdFiles->push("{$this->moduleName}.{$file->getExtension()}");
+            $createdFiles->push($filename);
         }
 
-        $this->io->listing($createdFiles->sort()->toArray());
+        $this->io->listing($createdFiles->filter()->sort()->toArray());
     }
 
     private function updateFileContents($contents)
     {
         $contents = str_replace('{{ name }}', $this->moduleName, $contents);
+        $contents = str_replace('{{ test_name }}', $this->testName, $contents);
 
         return $contents;
     }
