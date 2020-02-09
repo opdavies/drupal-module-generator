@@ -3,6 +3,7 @@
 namespace Opdavies\DrupalModuleGenerator\Command;
 
 use Opdavies\DrupalModuleGenerator\Exception\CannotCreateModuleException;
+use Opdavies\DrupalModuleGenerator\Service\ModuleNameConverter;
 use Opdavies\DrupalModuleGenerator\Service\TestNameConverter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,6 +18,7 @@ use Tightenco\Collect\Support\Collection;
 class GenerateDrupal7Command extends Command
 {
     private $moduleName;
+    private $machineName;
     private $testName;
 
     /** @var Filesystem */
@@ -28,17 +30,22 @@ class GenerateDrupal7Command extends Command
     /** @var SymfonyStyle $io */
     private $io;
 
+    /** @var ModuleNameConverter */
+    private $moduleNameConverter;
+
     /** @var TestNameConverter */
     private $testNameConverter;
 
     public function __construct(
         Finder $finder,
+        ModuleNameConverter $moduleNameConverter,
         TestNameConverter $testNameConverter,
         string $name = null
     ) {
         parent::__construct($name);
 
         $this->finder = $finder;
+        $this->moduleNameConverter = $moduleNameConverter;
         $this->testNameConverter = $testNameConverter;
     }
 
@@ -64,8 +71,9 @@ class GenerateDrupal7Command extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
-        $this->moduleName = $input->getArgument('module-name');
-        $this->testName = $this->testNameConverter->__invoke($this->moduleName);
+        $this->machineName = $input->getArgument('module-name');
+        $this->moduleName = $this->moduleNameConverter->__invoke($this->machineName);
+        $this->testName = $this->testNameConverter->__invoke($this->machineName);
 
         $this
             ->ensureDirectoryDoesNotExist()
@@ -80,7 +88,7 @@ class GenerateDrupal7Command extends Command
      */
     private function ensureDirectoryDoesNotExist()
     {
-        if (is_dir($this->moduleName)) {
+        if (is_dir($this->machineName)) {
             throw CannotCreateModuleException::directoryAlreadyExists();
         }
 
@@ -89,7 +97,7 @@ class GenerateDrupal7Command extends Command
 
     private function createModuleDirectory()
     {
-        mkdir($this->moduleName);
+        mkdir($this->machineName);
 
         return $this;
     }
@@ -101,10 +109,10 @@ class GenerateDrupal7Command extends Command
 
         /** @var SplFileInfo $file */
         foreach ($this->finder->in('fixtures/drupal7_module')->files() as $file) {
-            $filename = "{$this->moduleName}.{$file->getExtension()}";
+            $filename = "{$this->machineName}.{$file->getExtension()}";
 
             if ($file->getRelativePath()) {
-                mkdir("{$this->moduleName}/{$file->getRelativePath()}", 0777, $recursive = true);
+                mkdir("{$this->machineName}/{$file->getRelativePath()}", 0777, $recursive = true);
 
                 $filename = "{$this->testName}.php";
                 $filename = "{$file->getRelativePath()}/{$filename}";
@@ -112,7 +120,7 @@ class GenerateDrupal7Command extends Command
 
             $contents = $this->updateFileContents($file->getContents());
 
-            file_put_contents("{$this->moduleName}/{$filename}", $contents);
+            file_put_contents("{$this->machineName}/{$filename}", $contents);
 
             $createdFiles->push($filename);
         }
