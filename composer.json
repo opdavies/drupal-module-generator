@@ -31,6 +31,9 @@
             "Opdavies\\Tests\\DrupalModuleGenerator\\": "tests/"
         }
     },
+    "bin": [
+        "bin/dmg"
+    ],
     "config": {
         "sort-packages": true
     }
