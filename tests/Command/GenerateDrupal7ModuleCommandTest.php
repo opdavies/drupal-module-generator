@@ -63,4 +63,22 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
         $this->assertStringContainsString('name = test_module', $contents);
         $this->assertStringContainsString('description = The description for test_module.', $contents);
     }
+
+    /** @test */
+    public function it_generates_a_module_file()
+    {
+        $finder = new Finder();
+        $command = new GenerateDrupal7Command($finder);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'module-name' => 'test_module',
+        ]);
+
+        $this->assertTrue(is_file('test_module/test_module.module'));
+
+        $contents = file_get_contents('test_module/test_module.module');
+
+        $this->assertStringContainsString('The main module file for test_module.', $contents);
+    }
 }

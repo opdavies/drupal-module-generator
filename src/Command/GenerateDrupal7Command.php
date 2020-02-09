@@ -88,7 +88,7 @@ class GenerateDrupal7Command extends Command
         $createdFiles = [];
 
         /** @var SplFileInfo $file */
-        foreach ($this->finder->in('fixtures/drupal7_module')->name('/.info/') as $file) {
+        foreach ($this->finder->in('fixtures/drupal7_module')->name('/.[info,module]/') as $file) {
             $contents = $this->updateFileContents($file->getContents());
 
             file_put_contents(
