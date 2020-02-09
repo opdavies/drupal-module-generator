@@ -60,6 +60,8 @@ final class GenerateDrupal7Command extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
+        $this->io->title("{$this->getApplication()->getName()} (D7)");
+
         $this->machineName = $input->getArgument('module-name');
         $this->moduleName = $this->moduleNameConverter->__invoke($this->machineName);
         $this->testName = $this->testNameConverter->__invoke($this->machineName);
@@ -113,7 +115,11 @@ final class GenerateDrupal7Command extends Command
             $createdFiles->push($filename);
         }
 
-        $this->io->listing($createdFiles->filter()->sort()->toArray());
+        if ($createdFiles->isNotEmpty()) {
+            $this->io->block('Files generated:');
+
+            $this->io->listing($createdFiles->sort()->toArray());
+        }
     }
 
     private function updateFileContents($contents)
