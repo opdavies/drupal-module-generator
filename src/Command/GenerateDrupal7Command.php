@@ -98,7 +98,7 @@ class GenerateDrupal7Command extends Command
         $testNameConverter = new TestNameConverter();
 
         /** @var SplFileInfo $file */
-        foreach ($this->finder->in('fixtures/drupal7_module')->files() as $file) {
+        foreach ($this->finder->in(__DIR__.'/../../fixtures/drupal7_module')->files() as $file) {
             $filename = "{$this->machineName}.{$file->getExtension()}";
 
             if ($file->getRelativePath()) {
