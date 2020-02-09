@@ -3,16 +3,16 @@
     "description": "Generates boilerplate code for Drupal modules.",
     "type": "project",
     "require": {
-        "symfony/console": "^5.0",
-        "symfony/dependency-injection": "^5.0",
-        "symfony/filesystem": "^5.0",
-        "symfony/finder": "^5.0",
+        "symfony/console": "^3.0 || ^4.0 || ^5.0",
+        "symfony/dependency-injection": "^3.0 || ^4.0 || ^5.0",
+        "symfony/filesystem": "^3.0 || ^4.0 || ^5.0",
+        "symfony/finder": "^3.0 || ^4.0 || ^5.0",
         "tightenco/collect": "^6.14"
     },
     "require-dev": {
         "php": "5.6 || ^7.0",
         "phpunit/phpunit": "^9.0",
-        "symfony/var-dumper": "^5.0"
+        "symfony/var-dumper": "^3.0 || ^4.0 || ^5.0"
     },
     "license": "MIT",
     "authors": [
