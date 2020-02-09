@@ -41,7 +41,7 @@ final class GenerateDrupal7Command extends Command
     /**
      * {@inheritdoc}
      */
-    protected static $defaultName = 'generate-drupal-7-module';
+    protected static $defaultName = 'generate:drupal-7-module';
 
     /**
      * {@inheritDoc}
