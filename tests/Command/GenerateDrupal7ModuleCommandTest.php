@@ -69,7 +69,7 @@ final class GenerateDrupal7ModuleCommandTest extends TestCase
         $contents = file_get_contents('test_module/test_module.info');
 
         $this->assertStringContainsString('name = Test Module', $contents);
-        $this->assertStringContainsString('description = The description for Test Module.', $contents);
+        $this->assertStringContainsString('description = Test Module module.', $contents);
     }
 
     /** @test */
