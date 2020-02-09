@@ -24,4 +24,17 @@ class GenerateDrupal7ModuleCommandTest extends TestCase
 
         rmdir('my-existing-drupal-module');
     }
+
+    /** @test */
+    public function it_creates_a_new_module_directory()
+    {
+        $commandTester = new CommandTester(new GenerateDrupal7Command());
+        $commandTester->execute([
+            'module-name' => 'my-new-drupal-module',
+        ]);
+
+        $this->assertTrue(is_dir('my-new-drupal-module'));
+
+        rmdir('my-new-drupal-module');
+    }
 }

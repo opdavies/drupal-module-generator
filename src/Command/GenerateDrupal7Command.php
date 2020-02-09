@@ -36,6 +36,8 @@ class GenerateDrupal7Command extends Command
 
         $this->ensureDirectoryDoesNotExist();
 
+        mkdir($this->moduleName);
+
         return 0;
     }
 
