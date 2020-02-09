@@ -11,6 +11,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Tightenco\Collect\Support\Collection;
 
 class GenerateDrupal7Command extends Command
 {
@@ -85,7 +86,7 @@ class GenerateDrupal7Command extends Command
 
     private function createFiles()
     {
-        $createdFiles = [];
+        $createdFiles = new Collection();
 
         /** @var SplFileInfo $file */
         foreach ($this->finder->in('fixtures/drupal7_module')->name('/.[info,module]/') as $file) {
@@ -96,10 +97,10 @@ class GenerateDrupal7Command extends Command
                 $contents
             );
 
-            $createdFiles[] = "{$this->moduleName}.{$file->getExtension()}";
+            $createdFiles->push("{$this->moduleName}.{$file->getExtension()}");
         }
 
-        $this->io->definitionList($createdFiles);
+        $this->io->listing($createdFiles->sort()->toArray());
     }
 
     private function updateFileContents($contents)
