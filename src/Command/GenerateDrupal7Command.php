@@ -10,7 +10,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Tightenco\Collect\Support\Collection;
@@ -95,7 +94,6 @@ final class GenerateDrupal7Command extends Command
     private function createFiles()
     {
         $createdFiles = new Collection();
-        $testNameConverter = new TestNameConverter();
 
         /** @var SplFileInfo $file */
         foreach ($this->finder->in(__DIR__.'/../../fixtures/drupal7_module')->files() as $file) {
