@@ -1,0 +1,3 @@
+name = {{ name }}
+description = The description for {{ name }}.
+core = 7.x
