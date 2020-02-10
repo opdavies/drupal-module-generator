@@ -2,6 +2,10 @@
 
 A scaffolding tool for generating new modules for Drupal 7 and (soon) 8.
 
+[Watch a short demo][demo].
+
+[demo]: https://opdavi.es/6i3YZ 'A short demo video on YouTube'
+
 ## Installation
 
 The Drupal Module Generator is installed via [Composer][]:
