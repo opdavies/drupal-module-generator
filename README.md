@@ -14,4 +14,11 @@ composer global require opdavies/drupal-module-generator
 
 ## Usage
 
-TODO
+### Drupal 7
+
+```bash
+dmg generate:drupal-7-module {name}
+```
+
+Generated Drupal 7 modules contain the appropriately named `.info` and `.module` files,
+as well as a test case located in `src/Tests/Functional` which [is loaded automatically](https://www.oliverdavies.uk/articles/psr4-autoloading-test-cases-drupal-7).
