@@ -62,7 +62,7 @@ final class GenerateDrupal7Command extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
-        $this->io->title("{$this->getApplication()->getName()} (D7)");
+        $this->io->title("Drupal Module Generator (D7)");
 
         $this->machineName = $input->getArgument('module-name');
         $this->moduleName = $this->moduleNameConverter->__invoke($this->machineName);
